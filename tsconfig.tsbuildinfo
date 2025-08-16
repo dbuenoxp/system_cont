@@ -1,0 +1,1 @@
+{"root":["./src/app.vue","./src/main.ts","./src/shims-vue.d.ts","./src/vite-env.d.ts","./src/components/about.vue","./src/components/helloworld.vue","./src/components/home.vue","./src/components/sidebar.vue","./src/components/team.vue"],"errors":true,"version":"5.8.3"}

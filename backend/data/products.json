@@ -1,0 +1,37 @@
+[
+  {
+    "id": "103c9f24-6a2c-488a-9317-becc5a8c8f1f",
+    "nombre": "Coca Cola",
+    "categoria": "Bebida",
+    "stock": 16,
+    "precio": 1.5
+  },
+  {
+    "id": "96d1b43e-ddec-4312-95fe-016c3b8b470b",
+    "nombre": "Inka Kola",
+    "categoria": "Bebida",
+    "stock": 25,
+    "precio": 1.5
+  },
+  {
+    "id": "411f5648-e9b0-4f43-a22d-aecd1476c017",
+    "nombre": "Papas Lays",
+    "categoria": "Snack",
+    "stock": 20,
+    "precio": 1.2
+  },
+  {
+    "id": "b6629d94-521d-4acd-8a7c-914d9317bde3",
+    "nombre": "Piqueo Snax",
+    "categoria": "Snack",
+    "stock": 12,
+    "precio": 1.2
+  },
+  {
+    "id": "8c681721-f3e0-4e91-95ad-58c1fb5f8de8",
+    "nombre": "Ritz",
+    "categoria": "Dulce",
+    "stock": 5,
+    "precio": 1
+  }
+]

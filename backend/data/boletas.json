@@ -1,0 +1,176 @@
+{
+  "B1750996181314_426": {
+    "cliente": {
+      "id": "0cdd6fce-dfb7-45cd-ab97-ac9130b44fe2",
+      "nombre": "Diego",
+      "apellido": "Bueno",
+      "edad": 32,
+      "monto": 25,
+      "pago": "Efectivo",
+      "tiempo": 30,
+      "entrada": "2025-06-18T05:07:07.664Z",
+      "salida": "2025-06-18T05:37:07.664Z",
+      "estado": "Tiempo Vencido",
+      "estadoPago": "LIBRE"
+    },
+    "productos": [
+      {
+        "nombre": "Papas Lays",
+        "cantidad": 1,
+        "precio": 1.2
+      },
+      {
+        "nombre": "Coca Cola",
+        "cantidad": 2,
+        "precio": 1.5
+      },
+      {
+        "nombre": "Ritz",
+        "cantidad": 1,
+        "precio": 1
+      },
+      {
+        "nombre": "Inka Kola",
+        "cantidad": 1,
+        "precio": 1.5
+      }
+    ],
+    "montoJuego": 25,
+    "total": 31.7,
+    "tipoPago": "Efectivo",
+    "montoRecibido": 50,
+    "vuelto": 18.3,
+    "fechaHora": "2025-06-27T03:49:41.300Z"
+  },
+  "B1750996809744_207": {
+    "cliente": {
+      "id": "605ef1f8-974e-4493-9901-402f91cc4fde",
+      "nombre": "Maria",
+      "apellido": "Contreras",
+      "edad": 5,
+      "monto": 20,
+      "pago": "PLIN",
+      "tiempo": 30,
+      "entrada": "2025-06-19T03:02:12.644Z",
+      "salida": "2025-06-19T03:32:12.644Z",
+      "estado": "Tiempo Vencido",
+      "estadoPago": "LIBRE"
+    },
+    "productos": [
+      {
+        "nombre": "Inka Kola",
+        "cantidad": 1,
+        "precio": 1.5
+      },
+      {
+        "nombre": "Piqueo Snax",
+        "cantidad": 1,
+        "precio": 1.2
+      }
+    ],
+    "montoJuego": 20,
+    "total": 22.7,
+    "tipoPago": "Yape",
+    "montoRecibido": 22.7,
+    "vuelto": 0,
+    "fechaHora": "2025-06-27T04:00:09.740Z"
+  },
+  "B1750997717001_292": {
+    "cliente": {
+      "id": "076eeb2b-514f-4c57-a3c9-59567c55cd6c",
+      "nombre": "Stephano",
+      "apellido": "Bueno",
+      "edad": 5,
+      "monto": 18,
+      "pago": "YAPE",
+      "tiempo": 43,
+      "entrada": "2025-06-18T05:08:41.122Z",
+      "salida": "2025-06-18T05:51:41.122Z",
+      "estado": "Tiempo Vencido",
+      "estadoPago": "LIBRE"
+    },
+    "productos": [
+      {
+        "nombre": "Inka Kola",
+        "cantidad": 2,
+        "precio": 1.5
+      },
+      {
+        "nombre": "Piqueo Snax",
+        "cantidad": 1,
+        "precio": 1.2
+      },
+      {
+        "nombre": "Ritz",
+        "cantidad": 1,
+        "precio": 1
+      },
+      {
+        "nombre": "Coca Cola",
+        "cantidad": 1,
+        "precio": 1.5
+      },
+      {
+        "nombre": "Papas Lays",
+        "cantidad": 1,
+        "precio": 1.2
+      }
+    ],
+    "montoJuego": 18,
+    "total": 25.9,
+    "tipoPago": "Efectivo",
+    "montoRecibido": 26,
+    "vuelto": 0.10000000000000142,
+    "fechaHora": "2025-06-27T04:15:16.998Z"
+  },
+  "B1751854463958_869": {
+    "cliente": {
+      "id": "df4b34a5-1fd8-4601-b0cf-613d90606c4e",
+      "estadoPago": "LIBRE",
+      "nombre": "Stephano",
+      "apellido": "Bueno",
+      "edad": 5,
+      "monto": 12,
+      "pago": "YAPE",
+      "tiempo": 15,
+      "entrada": "2025-07-07T01:50:56.211Z",
+      "salida": "2025-07-07T02:05:56.211Z",
+      "estado": "Tiempo Vencido"
+    },
+    "productos": [],
+    "montoJuego": 12,
+    "total": 12,
+    "tipoPago": "Efectivo",
+    "montoRecibido": 12,
+    "vuelto": 0,
+    "fechaHora": "2025-07-07T02:14:23.955Z"
+  },
+  "B1751858787262_767": {
+    "cliente": {
+      "id": "67520983-4cee-4942-8b26-6d1294274fa9",
+      "estadoPago": "LIBRE",
+      "nombre": "Gloria",
+      "apellido": "Torres",
+      "edad": 5,
+      "monto": 12,
+      "pago": "PLIN",
+      "tiempo": 15,
+      "entrada": "2025-07-07T02:28:11.169Z",
+      "salida": "2025-07-07T02:43:11.169Z",
+      "estado": "Tiempo Vencido"
+    },
+    "productos": [
+      {
+        "nombre": "Coca Cola",
+        "cantidad": 1,
+        "precio": 1.5
+      }
+    ],
+    "montoJuego": 12,
+    "total": 13.5,
+    "tipoPago": "Plin",
+    "montoRecibido": 13.5,
+    "vuelto": 0,
+    "fechaHora": "2025-07-07T03:26:27.250Z"
+  }
+}

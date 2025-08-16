@@ -1,0 +1,71 @@
+{
+  "VP1751854130613_363": {
+    "cliente": "Diego Bueno",
+    "productos": [
+      {
+        "nombre": "Inka Kola",
+        "cantidad": 1,
+        "precio": 1.5
+      },
+      {
+        "nombre": "Ritz",
+        "cantidad": 1,
+        "precio": 1
+      }
+    ],
+    "total": 2.5,
+    "fecha": "2025-07-07T02:08:50.593Z"
+  },
+  "VP1751854522520_18": {
+    "cliente": "Stephano Bueno",
+    "productos": [
+      {
+        "id": "103c9f24-6a2c-488a-9317-becc5a8c8f1f",
+        "nombre": "Coca Cola",
+        "cantidad": 1,
+        "precio": 1.5
+      }
+    ],
+    "total": 1.5,
+    "fecha": "2025-07-07T02:15:22.517Z"
+  },
+  "VP1751854617641_269": {
+    "cliente": "Diego Bueno",
+    "productos": [
+      {
+        "id": "103c9f24-6a2c-488a-9317-becc5a8c8f1f",
+        "nombre": "Coca Cola",
+        "cantidad": 1,
+        "precio": 1.5
+      }
+    ],
+    "total": 1.5,
+    "fecha": "2025-07-07T02:16:57.598Z"
+  },
+  "VP1751854693467_584": {
+    "cliente": "Laura Chavez",
+    "productos": [
+      {
+        "id": "8c681721-f3e0-4e91-95ad-58c1fb5f8de8",
+        "nombre": "Ritz",
+        "cantidad": 1,
+        "precio": 1
+      }
+    ],
+    "total": 1,
+    "fecha": "2025-07-07T02:18:13.447Z"
+  },
+  "VP1751854705742_122": {
+    "cliente": "Ricardo Mendoza",
+    "productos": [
+      {
+        "id": "103c9f24-6a2c-488a-9317-becc5a8c8f1f",
+        "nombre": "Coca Cola",
+        "cantidad": 1,
+        "precio": 1.5
+      }
+    ],
+    "total": 1.5,
+    "fecha": "2025-07-07T02:18:25.736Z"
+  }
+}

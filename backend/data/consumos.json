@@ -1,0 +1,84 @@
+{
+  "turno_Diego_Bueno_2025-06-18_000707": [
+    {
+      "nombre": "Papas Lays",
+      "cantidad": 1,
+      "precio": 1.2
+    },
+    {
+      "nombre": "Coca Cola",
+      "cantidad": 2,
+      "precio": 1.5
+    },
+    {
+      "nombre": "Ritz",
+      "cantidad": 1,
+      "precio": 1
+    },
+    {
+      "nombre": "Inka Kola",
+      "cantidad": 1,
+      "precio": 1.5
+    }
+  ],
+  "turno_Stephano_Bueno_2025-06-18_000841": [
+    {
+      "nombre": "Inka Kola",
+      "cantidad": 2,
+      "precio": 1.5
+    },
+    {
+      "nombre": "Piqueo Snax",
+      "cantidad": 1,
+      "precio": 1.2
+    },
+    {
+      "nombre": "Ritz",
+      "cantidad": 1,
+      "precio": 1
+    },
+    {
+      "nombre": "Coca Cola",
+      "cantidad": 1,
+      "precio": 1.5
+    },
+    {
+      "nombre": "Papas Lays",
+      "cantidad": 1,
+      "precio": 1.2
+    }
+  ],
+  "turno_Maria_Contreras_2025-06-19_220212": [
+    {
+      "nombre": "Inka Kola",
+      "cantidad": 1,
+      "precio": 1.5
+    },
+    {
+      "nombre": "Piqueo Snax",
+      "cantidad": 1,
+      "precio": 1.2
+    }
+  ],
+  "turno_Betty_Pinzon Solano_2025-06-27_001808": [
+    {
+      "nombre": "Papas Lays",
+      "cantidad": 1,
+      "precio": 1.2
+    }
+  ],
+  "turno_Stephano_Bueno_2025-07-07_205056": [
+    {
+      "nombre": "Coca Cola",
+      "cantidad": 1,
+      "precio": 1.5
+    }
+  ],
+  "turno_Gloria_Torres_2025-07-07_212811": [
+    {
+      "nombre": "Coca Cola",
+      "cantidad": 1,
+      "precio": 1.5
+    }
+  ]
+}

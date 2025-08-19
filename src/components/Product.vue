@@ -1,89 +1,80 @@
 <template>
+  <div class="admin-view futuristic-card">
     <div class="admin-card">
       <h1 class="title">Gestión de Productos</h1>
-  
-      <!-- Filtros y botones -->
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-2">
-          <label class="text-sm font-medium">Nombre:</label>
-          <input v-model="filtroNombre" type="text" placeholder="Buscar producto..."
-                 class="form-input ml-14" />
+      <div class="top-bar">
+        <div class="filter-container filter-row">
+          <label for="filtroNombre" class="filter-label">🔎 Buscar producto:</label>
+          <input id="filtroNombre" v-model="filtroNombre" type="text" placeholder="Buscar producto..." class="form-input filter-input" />
         </div>
-        <div class="flex gap-2">
-          <button class="btn btn-success ml-14" @click="showModal = true">➕ Nuevo</button>
-          <button class="btn btn-secondary ml-14" @click="exportarExcel">📤 Exportar</button>
+        <div class="actions">
+          <button class="btn" @click="showModal = true">➕ Nuevo</button>
+          <button class="btn" @click="exportarExcel">📤 Exportar</button>
         </div>
       </div>
-  
-      <!-- Lista de productos -->
-      <table class="w-full table-auto border mt-24">
-        <thead>
-          <tr class="bg-gray-200 text-left text-sm">
-            <th class="p-2">Nombre</th>
-            <th class="p-2">Categoría</th>
-            <th class="p-2">Stock Disponible</th>
-            <th class="p-2">Precio</th>
-            <th class="p-2" style="text-align: center;">Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="p in productosFiltrados" :key="p.id" class="text-sm border-t">
-            <td class="p-2">{{ p.nombre }}</td>
-            <td class="p-2">{{ p.categoria }}</td>
-            <td class="p-2">{{ p.stock }}</td>
-            <td class="p-2">S/ {{ p.precio }}</td>
-            <td class="p-2 flex gap-2">
-              <button type="button" class="buttonList" @click="editarProducto(p.id)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-success"><path d="M15.2869 3.15178L14.3601 4.07866L5.83882 12.5999L5.83881 12.5999C5.26166 13.1771 4.97308 13.4656 4.7249 13.7838C4.43213 14.1592 4.18114 14.5653 3.97634 14.995C3.80273 15.3593 3.67368 15.7465 3.41556 16.5208L2.32181 19.8021L2.05445 20.6042C1.92743 20.9852 2.0266 21.4053 2.31063 21.6894C2.59466 21.9734 3.01478 22.0726 3.39584 21.9456L4.19792 21.6782L7.47918 20.5844L7.47919 20.5844C8.25353 20.3263 8.6407 20.1973 9.00498 20.0237C9.43469 19.8189 9.84082 19.5679 10.2162 19.2751C10.5344 19.0269 10.8229 18.7383 11.4001 18.1612L11.4001 18.1612L19.9213 9.63993L20.8482 8.71306C22.3839 7.17735 22.3839 4.68748 20.8482 3.15178C19.3125 1.61607 16.8226 1.61607 15.2869 3.15178Z" stroke="currentColor" stroke-width="1.5"></path><path opacity="0.5" d="M14.36 4.07812C14.36 4.07812 14.4759 6.04774 16.2138 7.78564C17.9517 9.52354 19.9213 9.6394 19.9213 9.6394M4.19789 21.6777L2.32178 19.8015" stroke="currentColor" stroke-width="1.5"></path></svg>
-              </button>
-              <!-- <button @click="editarProducto(index)" title="Editar">
-                ✏️
-              </button> -->
-              <button type="button" class="buttonList" @click="eliminar(p.id)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-danger"><path d="M20.5001 6H3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path d="M18.8334 8.5L18.3735 15.3991C18.1965 18.054 18.108 19.3815 17.243 20.1907C16.378 21 15.0476 21 12.3868 21H11.6134C8.9526 21 7.6222 21 6.75719 20.1907C5.89218 19.3815 5.80368 18.054 5.62669 15.3991L5.16675 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path opacity="0.5" d="M9.5 11L10 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path opacity="0.5" d="M14.5 11L14 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><path opacity="0.5" d="M6.5 6C6.55588 6 6.58382 6 6.60915 5.99936C7.43259 5.97849 8.15902 5.45491 8.43922 4.68032C8.44784 4.65649 8.45667 4.62999 8.47434 4.57697L8.57143 4.28571C8.65431 4.03708 8.69575 3.91276 8.75071 3.8072C8.97001 3.38607 9.37574 3.09364 9.84461 3.01877C9.96213 3 10.0932 3 10.3553 3H13.6447C13.9068 3 14.0379 3 14.1554 3.01877C14.6243 3.09364 15.03 3.38607 15.2493 3.8072C15.3043 3.91276 15.3457 4.03708 15.4286 4.28571L15.5257 4.57697C15.5433 4.62992 15.5522 4.65651 15.5608 4.68032C15.841 5.45491 16.5674 5.97849 17.3909 5.99936C17.4162 6 17.4441 6 17.5 6" stroke="currentColor" stroke-width="1.5"></path></svg>
-              </button>
-              <!-- <button @click="eliminarProducto(index)" title="Eliminar">
-                🗑️
-              </button> -->
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="productos-table futuristic-table product-table-bg">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Categoría</th>
+              <th>Stock</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="p in productosFiltrados" :key="p.id">
+              <td>{{ p.nombre }}</td>
+              <td>{{ p.categoria }}</td>
+              <td>{{ p.stock }}</td>
+              <td>S/ {{ p.precio }}</td>
+              <td>
+                <button class="buttonList btn-action-edit" @click="editarProducto(p.id)" title="Editar">✏️</button>
+                <button class="buttonList btn-action-delete" @click="eliminar(p.id)" title="Eliminar">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
        <!-- Modal -->
     <div v-if="showModal" class="modal-backdrop">
-      <div class="modal">
-        <h2 class="title">
-          {{ modoEdicion ? 'Editar Producto' : 'Nuevo Producto' }}
-        </h2>
-        <form @submit.prevent="guardarProducto" class="form-grid">
-        <div class="mb-3">
-          <label class="block text-sm font-medium">Nombre del producto</label>
-          <input v-model="form.nombre" type="text" class="form-input" />
-        </div>
-  
-        <div class="mb-3">
-          <label class="block text-sm font-medium">Categoría</label>
-          <select v-model="form.categoria" class="form-input">
-            <option value="Bebida">Bebida</option>
-            <option value="Snack">Snack</option>
-            <option value="Dulce">Dulce</option>
-            <option value="Otros">Otros</option>
-          </select>
-        </div>
-  
-        <div class="mb-3">
-          <label class="block text-sm font-medium">Stock</label>
-          <input v-model.number="form.stock" type="number" min="0" class="form-input" />
-        </div>
-  
-        <div class="mb-4">
-          <label class="block text-sm font-medium">Precio</label>
-          <input v-model.number="form.precio" type="number" min="0" step="0.01" class="form-input" />
-        </div>
-  
-        <div class="form-actions mt-24">  
-          <button @click="showModal = false" class="btn-danger">Cancelar</button>
-          <button type="submit" class="btn-success ml-14">Guardar</button>
-        </div>
-      </form>
+    <div class="modal-backdrop" v-if="showModal">
+      <div class="modal modal-nuevo-registro">
+        <h2 class="modal-title">{{ modoEdicion ? 'Editar Producto' : 'Nuevo Producto' }}</h2>
+        <form @submit.prevent="guardarProducto" class="form-grid form-grid-responsive">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre del producto</label>
+              <input v-model="form.nombre" type="text" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label>Categoría</label>
+              <select v-model="form.categoria" class="form-input" required>
+                <option value="Bebida">Bebida</option>
+                <option value="Snack">Snack</option>
+                <option value="Dulce">Dulce</option>
+                <option value="Otros">Otros</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Stock</label>
+              <input v-model.number="form.stock" type="number" min="0" class="form-input" required />
+            </div>
+            <div class="form-group">
+              <label>Precio</label>
+              <input v-model.number="form.precio" type="number" min="0" step="0.01" class="form-input" required />
+            </div>
+          </div>
+          <div class="form-actions form-actions-responsive">
+            <button type="button" @click="showModal = false">❌ Cancelar</button>
+            <button type="submit">💾 Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
       </div>
    
     </div>
@@ -333,14 +324,17 @@ table>thead>tr>th, table>tbody>tr>td {
     line-height: 1.25rem;
 }
 
-.admin-card {
-  background: linear-gradient(90deg, rgb(209 225 250) 0%, rgb(249 224 198) 50%, rgb(249 206 190) 100%);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 2rem;
-  margin: 1rem auto;
-  max-width: 1200px;
-}
+ .admin-card {
+    background: linear-gradient(120deg, #fff6e6 0%, #ffe6b3 100%);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 #f7c59f44, 0 1.5px 8px #ffe6b322;
+    padding: 2.5rem 2rem 2rem 2rem;
+    margin: 1.5rem auto;
+    max-width: 1200px;
+    border: 2px solid #f7c59f;
+    position: relative;
+    overflow: hidden;
+  }
 
 
 .ltr\:mr-2:where([dir="ltr"],[dir="ltr"] *) {
@@ -509,6 +503,267 @@ table>thead>tr>th, table>tbody>tr>td {
   cursor: pointer;
   transition: background-color 0.2s;
   min-width: 120px;
+}
+
+/* === ESTILOS UNIFICADOS CON ABOUT.VUE === */
+  .admin-card > * { position: relative; z-index: 1; }
+  .futuristic-bg {
+    background: linear-gradient(120deg, #ffe6b3 0%, #fff6e6 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+
+  .futuristic-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(120deg, #ffe6b311 0%, #f7c59f11 100%);
+    z-index: 0;
+    border-radius: 18px;
+    pointer-events: none;
+  }
+  
+.title {
+  color: #2c3e50;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.filter-container {
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+.productos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+.productos-table th,
+.productos-table td {
+  border: 1.5px solid #f7c59f;
+  padding: 0.5rem;
+  text-align: center;
+}
+.productos-table th {
+  background: linear-gradient(90deg, #b3e6ff 0%, #a3c8f7 100%);
+  color: #4a6fa5;
+  white-space: nowrap;
+  border: 2px solid #a3c8f7;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 4px #fff6e6;
+}
+.futuristic-table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px #f7c59f33;
+}
+.futuristic-table td {
+  border: 1.5px solid #f7c59f;
+  background: #e6f7ff;
+  color: #4a6fa5;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+.futuristic-table tr:hover td {
+  background: #b3e6ff;
+}
+.buttonList {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin: 0 0.25rem;
+  color: #226488;
+  transition: color 0.2s;
+}
+.buttonList:hover {
+  color: #28a745;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.modal-nuevo-registro {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 18px;
+  width: 95vw;
+  max-width: 420px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  position: relative;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+}
+.modal-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.2rem;
+  color: #226488;
+  letter-spacing: 0.04em;
+}
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.form-row {
+  display: flex;
+  gap: 1.2rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  font-size: 15px;
+  color: #226488;
+}
+.modal-nuevo-registro .form-input,
+.modal-nuevo-registro select {
+  padding: 0.7rem;
+  border: 1.5px solid #a3c8f7;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  background: #f8fafc;
+}
+.modal-nuevo-registro .form-input:focus,
+.modal-nuevo-registro select:focus {
+  border-color: #226488;
+}
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.8rem;
+}
+.form-actions button {
+  flex: 1 1 120px;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 120px;
+  max-width: 180px;
+  font-weight: 600;
+}
+.form-actions button[type="submit"] {
+  background-color: #28a745;
+  color: white;
+}
+.form-actions button[type="submit"]:hover {
+  background-color: #218838;
+}
+.form-actions button[type="button"] {
+  background-color: #dc3545;
+  color: white;
+}
+.form-actions button[type="button"]:hover {
+  background-color: #c82333;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.filter-label {
+  font-size: 1.1rem;
+  color: #226488;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+.filter-input {
+  min-width: 220px;
+  max-width: 320px;
+  flex: 1 1 220px;
+}
+.btn {
+  padding: 0 1.5rem;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #b3e6ff;
+  color: #226488;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #b3e6ff33;
+  transition: background 0.2s, color 0.2s;
+  min-width: 150px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+}
+.btn:last-child { margin-right: 0; }
+.btn:hover {
+  background-color: #a3c8f7;
+  color: #17405c;
+}
+
+@media (max-width: 900px) {
+  .modal-nuevo-registro {
+    max-width: 99vw;
+    padding: 1rem 0.2rem;
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .form-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .productos-table {
+    font-size: 12px;
+    min-width: 600px;
+  }
 }
 </style>
   

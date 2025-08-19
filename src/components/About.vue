@@ -1,8 +1,8 @@
 <template>
-    <div class="admin-view">
-    <div class="admin-card">
-        <div  class="clock-container">
-            <h2>{{ currentTime }}</h2>
+    <div class="admin-view futuristic-card">
+      <div class="admin-card">
+        <div class="clock-container futuristic-clock">
+          <h2><span class="clock-glow">{{ currentTime }}</span></h2>
         </div>
       <h1 class="title">Administrar Turnos</h1>
       <div class="top-bar">
@@ -16,22 +16,22 @@
           <button class="btn" @click="showModal = true">➕ Nuevo</button>
         </div>
       </div>
-      <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Nombres</th>
-          <th>Edad</th>
-          <th>Monto</th>
-          <th>Tiempo</th>
-          <th>Entrada</th>
-          <th>Salida</th>
-          <th>Estado</th>
-          <th>Productos</th>
-          <th>Controles</th>
-          <th>Cobrar</th>
-        </tr>
-      </thead>
+  <div class="table-responsive"><table class="turnos-table futuristic-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nombres</th>
+            <th>Edad</th>
+            <th>Monto</th>
+            <th>Tiempo</th>
+            <th>Entrada</th>
+            <th>Salida</th>
+            <th>Estado</th>
+            <th>Productos</th>
+            <th>Controles</th>
+            <th>Cobrar</th>
+          </tr>
+        </thead>
       <tbody>
         <tr v-for="(p, i) in paginatedPlayers" :key="p.id">
           <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
@@ -60,48 +60,74 @@
           </td>
         </tr>
       </tbody>
-    </table>
+  </table></div>
     <div class="pagination">
       <button @click="cambiarPagina(currentPage - 1)" :disabled="currentPage === 1">⬅️ Anterior</button>
       <span>Página {{ currentPage }} de {{ totalPages }}</span>
       <button @click="cambiarPagina(currentPage + 1)" :disabled="currentPage === totalPages">Siguiente ➡️</button>
     </div>
+
+
+</div>
     <!-- Modal -->
     <div v-if="showModal" class="modal-backdrop">
-      <div class="modal">
-        <h2 style="text-align: center;"> {{ modoEditar ? 'Editar Registro' : 'Nuevo Registro' }}</h2>
-        <form @submit.prevent="modoEditar ? actualizar() : registrar()" class="form-grid">
-        <div class="form-group">
-            <label>👤 Nombres:</label>
-            <input v-model="form.nombre" placeholder="Ingrese nombre" required />
-        </div>
-        <div class="form-group">
-            <label>👤 Apellidos:</label>
-            <input v-model="form.apellido" placeholder="Ingrese apellido" required />
-        </div>
-        <div class="form-group">
-            <label>🎂 Edad:</label>
-            <input v-model.number="form.edad" type="number" placeholder="Edad" required />
-        </div>
-        <div class="form-group">
-            <label>💰 Monto (S/):</label>
-            <input v-model.number="form.monto" type="number" placeholder="Monto (12 o 20)" required />
-        </div>
-        <div class="form-group">
-            <label>💳 Forma de Pago:</label>
-            <select v-model="form.pago">
-            <option>Efectivo</option>
-            <option>Tarjeta</option>
-            <option>YAPE</option>
-            <option>PLIN</option>
-            </select>
-        </div>
-        <div class="form-actions">
+      <div class="modal modal-nuevo-registro">
+        <h2 class="modal-title">{{ modoEditar ? 'Editar Registro' : 'Nuevo Registro' }}</h2>
+        <form @submit.prevent="modoEditar ? actualizar() : registrar()" class="form-grid form-grid-responsive">
+          <div class="form-row">
+            <div class="form-group" style="position:relative;">
+              <label>👤 Nombres:</label>
+              <input v-model="form.nombre" placeholder="Ingrese nombre" required
+                    @input="buscarSugerenciasNombre"
+                    @focus="buscarSugerenciasNombre"
+                    @blur="ocultarSugerenciasConRetardo"
+                    autocomplete="off" />
+              <ul v-if="sugerenciasNombre.length && mostrarSugerenciasNombre" class="autocomplete-list">
+                <li v-for="(s, idx) in sugerenciasNombre" :key="idx" @mousedown.prevent="seleccionarSugerencia(s)">
+                  {{ s.nombre }} {{ s.apellido }}
+                </li>
+              </ul>
+            </div>
+            <div class="form-group" style="position:relative;">
+              <label>👤 Apellidos:</label>
+              <input v-model="form.apellido" placeholder="Ingrese apellido" required
+                    @input="buscarSugerenciasApellido"
+                    @focus="buscarSugerenciasApellido"
+                    @blur="ocultarSugerenciasConRetardoApellido"
+                    autocomplete="off" />
+              <ul v-if="sugerenciasApellido.length && mostrarSugerenciasApellido" class="autocomplete-list">
+                <li v-for="(s, idx) in sugerenciasApellido" :key="idx" @mousedown.prevent="seleccionarSugerencia(s)">
+                  {{ s.nombre }} {{ s.apellido }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>🎂 Edad:</label>
+              <input v-model.number="form.edad" type="number" placeholder="Edad" required />
+            </div>
+            <div class="form-group">
+              <label>💰 Monto (S/):</label>
+              <input v-model.number="form.monto" type="number" placeholder="Monto (12 o 20)" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group" style="flex:1;">
+              <label>💳 Forma de Pago:</label>
+              <select v-model="form.pago">
+                <option>Efectivo</option>
+                <option>Tarjeta</option>
+                <option>YAPE</option>
+                <option>PLIN</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-actions form-actions-responsive">
             <button type="submit">💾 Guardar</button>
             <button type="button" @click="showModal = false">❌ Cancelar</button>
-        </div>
+          </div>
         </form>
-
       </div>
     </div>
 
@@ -117,63 +143,69 @@
   </div>
   
   <div v-show="showProductosModal" class="modal-backdrop">
-    <div class="modal">
-    <h2>📦 Añadir Productos Consumidos</h2>
-    <div class="form-group producto-form">
-      <label>Producto:</label>  
-      <select v-model="productoSeleccionadoId" class="form-input" @change="asignarPrecio">
-        <option disabled value="">Seleccione producto</option>
-        <option v-for="prod in productosDisponibles" :key="prod.id" :value="prod.id">
-          {{ prod.nombre }} - S/ {{ prod.precio }}
-        </option>
-      </select>
-      <div class="form-group">
+    <div class="modal modal-productos-consumidos">
+      <h2 class="modal-title">📦 Productos Consumidos</h2>
+      <form class="form-grid form-grid-responsive" @submit.prevent="agregarProducto">
+        <div class="form-row">
+          <div class="form-group" style="flex:1;">
+            <label>Producto:</label>
+            <select v-model="productoSeleccionadoId" class="form-input" @change="asignarPrecio" required>
+              <option disabled value="">Seleccione producto</option>
+              <option v-for="prod in productosDisponibles" :key="prod.id" :value="prod.id">
+                {{ prod.nombre }} - S/ {{ prod.precio }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
             <label>Cantidad:</label>
-            <input type="number" class="form-input w-32" v-model.number="nuevoProducto.cantidad" placeholder="Cantidad" />
+            <input type="number" class="form-input w-32" v-model.number="nuevoProducto.cantidad" min="1" placeholder="Cantidad" required />
+          </div>
+          <div class="form-group">
+            <label>Precio S/:</label>
+            <input type="number" class="form-input w-32" v-model.number="nuevoProducto.precio" placeholder="Precio" readonly />
+          </div>
+        </div>
+        <div class="form-actions form-actions-responsive">
+          <button type="submit" class="btn-secondary">➕ Agregar</button>
+          <button type="button" class="btn-danger" @click="cerrarModalProductos">❌ Cerrar</button>
+        </div>
+      </form>
+      <div class="table-responsive">
+        <table class="productos-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Total</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(prod, i) in productosConsumidos" :key="i">
+              <td>{{ prod.nombre }}</td>
+              <td>{{ prod.cantidad }}</td>
+              <td>S/{{ prod.precio }}</td>
+              <td>S/{{ (prod.cantidad * prod.precio).toFixed(2) }}</td>
+              <td><button @click="eliminarProducto(i)">🗑️</button></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="form-group">
-            <label style="margin-left: 4px;">Precio S/:</label>
-            <input type="number" class="form-input w-32" disabled="false" v-model.number="nuevoProducto.precio" placeholder="Precio" readonly />
-      </div>
-
-      <button class="mt-24 btn-secondary" @click="agregarProducto">➕ Agregar</button>
-    </div>
-
-    <table class="productos-table">
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Cantidad</th>
-          <th>Precio Unitario</th>
-          <th>Total</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(prod, i) in productosConsumidos" :key="i">
-          <td>{{ prod.nombre }}</td>
-          <td>{{ prod.cantidad }}</td>
-          <td>S/{{ prod.precio }}</td>
-          <td>S/{{ (prod.cantidad * prod.precio).toFixed(2) }}</td>
-          <td><button @click="eliminarProducto(i)">🗑️</button></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div style="margin-top: 1rem; display: flex; justify-content: flex-end;">
-      <button @click="cerrarModalProductos" class="btn-danger">❌ Cerrar</button>
     </div>
   </div>
-</div>
 
   <div class="modal-backdrop" v-if="showCobrarModal">
-    <div class="modal">
+    <div class="modal modal-cobrar">
       <h2 class="title">PLAYGROUND</h2>
       <label>Av. Principal 123 - Lima, Perú</label>
       <label>R.U.C. 12345678900</label>
       <p class="boleta-title">BOLETA DE VENTA ELECTRÓNICA</p>
       <label>B001 - N°000001</label>
-      <table class="boleta-table">
+  <div class="table-responsive">
+    <table class="boleta-table">
         <thead>
           <tr>
             <th>Producto</th>
@@ -198,7 +230,7 @@
             <td><strong>S/. {{ (total).toFixed(2) }}</strong></td>
           </tr>
         </tbody>
-      </table>
+  </table></div>
 
       <div class="form-group">
         <label for="pago">Tipo de pago:</label>
@@ -227,9 +259,6 @@
       </div>
     </div>
   </div>
-
-</div>
-
         <div v-if="mensaje" class="notificacion">
         {{ mensaje }}
         </div>
@@ -239,34 +268,9 @@
   <script setup>
   import * as XLSX from 'xlsx'
   import { saveAs } from 'file-saver'
-  import { ref, onMounted, watch, computed   } from 'vue'
+  import { ref, onMounted, watch, computed } from 'vue'
   import jsPDF from 'jspdf'
   import autoTable from 'jspdf-autotable'
-
-//   const showModal = ref(false)
-//   const players = ref([])
-//   const mensaje = ref('')
-//   const form = ref({ nombre: '', apellido: '', edad: '', monto: '', pago: 'Efectivo' })
-//   const currentTime = ref(new Date().toLocaleString())
-//   const modoEditar = ref(false)
-//   const editIndex = ref(null)
-//   const ClienteIndex = ref(null)
-//   const showDeleteConfirm = ref(false)
-//   const deleteIndex = ref(null)
-//   const showProductosModal = ref(false)
-//   const clienteActual = ref(null)
-//   const productoSeleccionado = ref(null)
-//   const cantidadProducto = ref(1)
-//   const productosDelCliente = ref([])
-//   const showCobrarModal = ref(false)
-//   const clienteCobroActual = ref(null)
-//   const productosCobroActual = ref([])
-//   const montoJuegoActual = ref(0)
-//   const productosDisponibles = ref([]);
-// const productoSeleccionadoId = ref('');
-// const cantidadSeleccionada = ref(1);
-// const productosConsumidosTemp = ref([]);
-// const turnoSeleccionado = ref(null)
 
 const showModal = ref(false)
 const players = ref([])
@@ -300,7 +304,23 @@ const nuevoProducto = ref({ nombre: '', cantidad: 1, precio: 0 })
 const fechaFiltro = ref(new Date().toISOString().split('T')[0])
 const currentPage = ref(1)
 const itemsPerPage = 8
+const sugerenciasNombre = ref([]);
+const sugerenciasApellido = ref([]);
+const mostrarSugerenciasNombre = ref(false);
+const mostrarSugerenciasApellido = ref(false);
+let retardoSugerencia = null;
   //const props = defineProps({ clienteId: String })
+
+// Bloquear scroll del body cuando hay un modal abierto
+watch([
+  showModal,
+  showDeleteConfirm,
+  showProductosModal,
+  showCobrarModal
+], ([modal, del, prod, cobrar]) => {
+  const anyOpen = modal || del || prod || cobrar
+  document.body.style.overflow = anyOpen ? 'hidden' : ''
+})
 
   const props = defineProps({
     clienteId: String,
@@ -455,30 +475,29 @@ const marcarComoPagado = async () =>  {
 }
 
 const agregarProducto = async () => {
+  const producto = productos.value.find(p => p.nombre === nuevoProducto.value.nombre);
+  if (!producto || nuevoProducto.value.cantidad <= 0) return;
 
-  const producto = productos.value.find(p => p.nombre === nuevoProducto.value.nombre)
-  if (!producto || nuevoProducto.value.cantidad <= 0) return
-
-  const consumido = productosConsumidos.value.find(p => p.nombre === producto.nombre)
-  const cantidadTotal = (consumido?.cantidad || 0) + nuevoProducto.value.cantidad
+  const consumido = productosConsumidos.value.find(p => p.nombre === producto.nombre);
+  const cantidadTotal = (consumido?.cantidad || 0) + nuevoProducto.value.cantidad;
 
   if (cantidadTotal > producto.stock) {
-    alert('⚠️ Stock insuficiente')
-    return
+    alert('⚠️ Stock insuficiente');
+    return;
   }
 
   if (consumido) {
-    consumido.cantidad += nuevoProducto.value.cantidad
+    consumido.cantidad += nuevoProducto.value.cantidad;
   } else {
     productosConsumidos.value.push({ ...nuevoProducto.value });
-    //productosConsumidos.value.push({ ...nuevoProducto.value })
   }
 
-  nuevoProducto.value = { nombre: '', cantidad: 1, precio: 0 }
+  // Solo limpiar el formulario de producto, no el cliente ni la lista de productos
+  nuevoProducto.value = { nombre: '', cantidad: 1, precio: 0 };
   productoSeleccionadoId.value = '';
-  await guardarConsumos()
-  showProductosModal.value = true;
-}
+  await guardarConsumos();
+  // No tocar showProductosModal ni clienteActual aquí
+};
 
 const cargarConsumos = async (turnoId) => {
   try {
@@ -575,35 +594,38 @@ const cargarProductosConsumidos = (cliente, index) => {
 
   const abrirModalProductos = async (cliente) => {
     if (!cliente || !cliente.entrada || !cliente.nombre) {
-    console.error('❌ Cliente no válido:', cliente);
-    return;
-  }
-
-  turnoSeleccionado.value = cliente;
-  const turnoId = generarTurnoId(cliente);
-  clienteActual.value = cliente;
-  productosConsumidosTemp.value = [];
-  showProductosModal.value = true;
-
-  if (productosDisponibles.value.length === 0) {
-    try {
-      const res = await fetch('http://localhost:3000/products');
-      productosDisponibles.value = await res.json();
-    } catch (err) {
-      console.error('Error cargando productos:', err);
+      console.error('❌ Cliente no válido:', cliente);
+      return;
     }
-  }
 
-  cargarConsumos(turnoId);
-    //cargarProductosConsumidos(cliente, index)
+    if (showProductosModal.value && clienteActual.value && clienteActual.value.id === cliente.id) {
+      return;
+    }
+
+    turnoSeleccionado.value = cliente;
+    const turnoId = generarTurnoId(cliente);
+    clienteActual.value = cliente;
+    productosConsumidosTemp.value = [];
+    showProductosModal.value = true;
+
+    if (productosDisponibles.value.length === 0) {
+      try {
+        const res = await fetch('http://localhost:3000/products');
+        productosDisponibles.value = await res.json();
+      } catch (err) {
+        console.error('Error cargando productos:', err);
+      }
+    }
+
+    await cargarConsumos(turnoId);
   };
 
   const cerrarModalProductos = () => {
-    showProductosModal.value = false
-    clienteActual.value = null
-    productosConsumidos.value = []
-    nuevoProducto.value = { nombre: '', cantidad: 1, precio: 0 }
-  }
+    showProductosModal.value = false;
+    clienteActual.value = null;
+    productosConsumidos.value = [];
+    nuevoProducto.value = { nombre: '', cantidad: 1, precio: 0 };
+  };
 
   const generarTurnoId = (cliente) => {
     const nombre = cliente.nombre || 'anonimo';
@@ -785,6 +807,67 @@ const registrar = async () => {
         setTimeout(() => mensaje.value = '', 3000)
     }
 
+    function getUniquePlayersByNameApellido(arr) {
+      const seen = new Set();
+      return arr.filter(p => {
+        const key = `${p.nombre}|${p.apellido}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+
+    function buscarSugerenciasNombre() {
+      const texto = form.value.nombre.trim().toLowerCase();
+      if (texto.length < 2) {
+        sugerenciasNombre.value = [];
+        mostrarSugerenciasNombre.value = false;
+        return;
+      }
+      const matches = players.value.filter(p =>
+        p.nombre.toLowerCase().includes(texto) || p.apellido.toLowerCase().includes(texto)
+      );
+      sugerenciasNombre.value = getUniquePlayersByNameApellido(matches).slice(0, 6);
+      mostrarSugerenciasNombre.value = !!sugerenciasNombre.value.length;
+    }
+
+    function buscarSugerenciasApellido() {
+      const texto = form.value.apellido.trim().toLowerCase();
+      if (texto.length < 2) {
+        sugerenciasApellido.value = [];
+        mostrarSugerenciasApellido.value = false;
+        return;
+      }
+      const matches = players.value.filter(p =>
+        p.apellido.toLowerCase().includes(texto) || p.nombre.toLowerCase().includes(texto)
+      );
+      sugerenciasApellido.value = getUniquePlayersByNameApellido(matches).slice(0, 6);
+      mostrarSugerenciasApellido.value = !!sugerenciasApellido.value.length;
+    }
+
+
+    function seleccionarSugerencia(s) {
+      form.value.nombre = s.nombre;
+      form.value.apellido = s.apellido;
+      form.value.edad = s.edad;
+      sugerenciasNombre.value = [];
+      sugerenciasApellido.value = [];
+      mostrarSugerenciasNombre.value = false;
+      mostrarSugerenciasApellido.value = false;
+    }
+
+    function ocultarSugerenciasConRetardo() {
+      retardoSugerencia = setTimeout(() => {
+        mostrarSugerenciasNombre.value = false;
+      }, 120);
+    }
+
+    function ocultarSugerenciasConRetardoApellido() {
+      retardoSugerencia = setTimeout(() => {
+        mostrarSugerenciasApellido.value = false;
+      }, 120);
+    }
+
     onMounted(async () => {
       //currentTime.value = new Date().toLocaleString()
       const data = await obtenerJugadores()
@@ -819,6 +902,7 @@ const registrar = async () => {
   border-bottom: 1px solid #ddd;
   font-size: 13px;
 }
+
 .total-row {
   font-weight: bold;
 }
@@ -858,22 +942,29 @@ const registrar = async () => {
       width: 8rem !important;
   }
 
-  .btn {
-    padding: 0.5rem 1rem;
-    font-size: 16px;
-    border: none;
-    border-radius: 6px;
-    background-color: #646cff;
-    color: white;
-    cursor: pointer;
-    /* background-color: #646cff;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin-right: 0.5rem;
-    border-radius: 6px;
-    cursor: pointer; */
-  }
+.btn {
+  padding: 0 1.5rem;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #b3e6ff;
+  color: #226488;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #b3e6ff33;
+  transition: background 0.2s, color 0.2s;
+  min-width: 150px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+}
+.btn:last-child { margin-right: 0; }
+.btn:hover {
+  background-color: #a3c8f7;
+  color: #17405c;
+}
 
 .producto-form {
   display: flex;
@@ -908,33 +999,46 @@ select, input {
     --tw-shadow: var(--tw-shadow-colored);
 }
 
-  .btn:hover {
-    background-color: #747bff;
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
   }
   .turnos-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
-    overflow-x: auto;
-    /* width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1); */
   }
   th, td {
-    border: 1px solid #ccc;
+    border: 1.5px solid #f7c59f;
     padding: 0.5rem;
     text-align: center;
-    /* padding: 0.75rem;
-    text-align: center;
-    border-bottom: 1px solid #ddd; */
   }
   th {
-    background-color: #eee;
+    background: linear-gradient(90deg, #b3e6ff 0%, #a3c8f7 100%);
+    color: #4a6fa5;
     white-space: nowrap;
-    /* background-color: #f1f1f1; */
+    border: 2px solid #a3c8f7;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    text-shadow: 0 1px 4px #fff6e6;
+  }
+ 
+  .futuristic-table td {
+    border: 1.5px solid #f7c59f;
+    background: #e6f7ff;
+    color: #4a6fa5;
+    font-size: 1rem;
+    transition: background 0.2s;
+  }
+  .futuristic-table tr:hover td {
+    background: #b3e6ff;
+  }
+  .futuristic-table {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px #f7c59f33;
   }
   .icon-btn {
     background: none;
@@ -945,13 +1049,36 @@ select, input {
   }
 
   .clock-container {
-    background-color: #8c91ef;
-    color: #ffffff;
-    font-size: 2rem;
-    padding: 2rem 4rem;
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #b3e6ff 0%, #a3c8f7 100%);
+    color: #4a6fa5;
+    font-size: 1.5rem;
+    /* padding: 2.5rem 4rem; */
+    border-radius: 30px;
+    box-shadow: 0 0 32px 8px #a3c8f755, 0 0 0 4px #b3e6ff44;
     text-align: center;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid #a3c8f7;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+  .clock-glow {
+    text-shadow: 0 0 8px #fff6e6, 0 0 16px #f7c59f, 0 0 4px #ffe6b3;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+  }
+  .futuristic-clock::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(120deg, #ffe6b333 0%, #f7c59f22 100%);
+    z-index: -1;
+    border-radius: 30px;
+    pointer-events: none;
   }
 
   .estado {
@@ -976,29 +1103,38 @@ select, input {
 }
 
 /* Modal general */
+
 .modal-backdrop {
   position: fixed;
-  top: 0; left: 0;
-  right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  z-index: 9999;
+  z-index: 99999;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 .modal {
-  background: white;
+  background: #fff;
   padding: 2rem;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px;
+  border-radius: 18px;
+  width: 95vw;
+  max-width: 420px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  position: relative;
+  z-index: 100000;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  overflow-x: auto;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
 }
 
 .modal-productos {
@@ -1007,60 +1143,74 @@ select, input {
   gap: 1rem;
 }
 
-/* Formulario */
+
+/* Formulario mejorado y responsivo */
+.modal-nuevo-registro {
+  max-width: 500px;
+  width: 98vw;
+  padding: 2rem 1.2rem;
+}
+.modal-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.2rem;
+  color: #226488;
+  letter-spacing: 0.04em;
+}
 .form-grid {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
 }
-
+.form-row {
+  display: flex;
+  gap: 1.2rem;
+}
 .form-group {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
-
 .form-group label {
   font-weight: bold;
   margin-bottom: 0.3rem;
-  font-size: 14px;
-  color: #333;
+  font-size: 15px;
+  color: #226488;
 }
-
 .modal input,
 .modal select {
-  padding: 0.6rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 0.7rem;
+  border: 1.5px solid #a3c8f7;
+  border-radius: 10px;
   font-size: 1rem;
   outline: none;
   transition: border-color 0.2s;
   width: 100%;
+  background: #f8fafc;
 }
-
 .modal input:focus,
 .modal select:focus {
-  border-color: #007bff;
+  border-color: #226488;
 }
-
-/* Botones del formulario */
 .form-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem;
+  justify-content: flex-end;
+  gap: 0.8rem;
 }
-
 .form-actions button {
-  flex: 1;
-  padding: 0.6rem;
+  flex: 1 1 120px;
+  padding: 0.7rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s;
   min-width: 120px;
+  max-width: 180px;
+  font-weight: 600;
 }
-
 .form-actions button[type="submit"] {
   background-color: #28a745;
   color: white;
@@ -1068,7 +1218,6 @@ select, input {
 .form-actions button[type="submit"]:hover {
   background-color: #218838;
 }
-
 .form-actions button[type="button"] {
   background-color: #dc3545;
   color: white;
@@ -1076,15 +1225,47 @@ select, input {
 .form-actions button[type="button"]:hover {
   background-color: #c82333;
 }
-
-.admin-card {
-  background: linear-gradient(90deg, rgb(209 225 250) 0%, rgb(249 224 198) 50%, rgb(249 206 190) 100%);
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 2rem;
-  margin: 1rem auto;
-  max-width: 1200px;
+@media (max-width: 600px) {
+  .modal-nuevo-registro {
+    max-width: 99vw;
+    padding: 1rem 0.2rem;
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .form-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 }
+
+  .admin-card {
+    background: linear-gradient(120deg, #fff6e6 0%, #ffe6b3 100%);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 #f7c59f44, 0 1.5px 8px #ffe6b322;
+    padding: 2.5rem 2rem 2rem 2rem;
+    margin: 1.5rem auto;
+    max-width: 1200px;
+    border: 2px solid #f7c59f;
+    position: relative;
+    overflow: hidden;
+  }
+  .futuristic-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(120deg, #ffe6b311 0%, #f7c59f11 100%);
+    z-index: 0;
+    border-radius: 18px;
+    pointer-events: none;
+  }
+  .admin-card > * { position: relative; z-index: 1; }
+  .futuristic-bg {
+    background: linear-gradient(120deg, #ffe6b3 0%, #fff6e6 100%);
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
 
 .notificacion {
   position: fixed;
@@ -1097,9 +1278,37 @@ select, input {
   box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-.pagination{
-  margin-top: 24px;
-}
+  .pagination{
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .pagination button {
+    background-color: #b3e6ff;
+    color: #226488;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    height: 40px;
+    box-shadow: 0 2px 8px #b3e6ff33;
+    transition: background 0.2s, color 0.2s;
+    min-width: 150px;
+  }
+  .pagination button:disabled {
+    background-color: #e6f7ff;
+    color: #a3c8f7;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .pagination button:not(:disabled):hover {
+    background-color: #a3c8f7;
+    color: #17405c;
+  }
 
 .filter-container{
   margin-bottom: 14px;
@@ -1130,16 +1339,178 @@ select, input {
   gap: 0.5rem;
 }
 
+.autocomplete-list {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  z-index: 10010;
+  background: #fff;
+  border: 1.5px solid #a3c8f7;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px #b3e6ff33;
+  width: 100%;
+  max-height: 180px;
+  overflow-y: auto;
+  margin-top: 2px;
+  padding: 0;
+  list-style: none;
+}
+.autocomplete-list li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.autocomplete-list li:hover {
+  background: #e6f7ff;
+}
+
+/* Modal productos consumidos mejorado */
+.modal-productos-consumidos {
+  max-width: 800px;
+  width: 98vw;
+  padding: 2rem 1.2rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 900px) {
+  .modal-productos-consumidos {
+    max-width: 99vw;
+    padding: 1rem 0.2rem;
+    max-height: 98vh;
+  }
+  .modal-productos-consumidos .table-responsive {
+    max-width: 100vw;
+    overflow-x: auto;
+  }
+}
+.modal-productos-consumidos .form-row {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+}
+.modal-productos-consumidos .form-group label {
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+  font-size: 15px;
+  color: #226488;
+}
+.modal-productos-consumidos .form-input,
+.modal-productos-consumidos select {
+  padding: 0.7rem;
+  border: 1.5px solid #a3c8f7;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  background: #f8fafc;
+}
+.modal-productos-consumidos .form-input:focus,
+.modal-productos-consumidos select:focus {
+  border-color: #226488;
+}
+.modal-productos-consumidos .form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+.modal-productos-consumidos .form-actions button {
+  flex: 1 1 120px;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 120px;
+  max-width: 180px;
+  font-weight: 600;
+}
+.modal-productos-consumidos .btn-secondary {
+  background-color: #805dca;
+  color: #fff;
+}
+.modal-productos-consumidos .btn-secondary:hover {
+  background-color: #6846b1;
+}
+.modal-productos-consumidos .btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+.modal-productos-consumidos .btn-danger:hover {
+  background-color: #c82333;
+}
+
+.modal-cobrar {
+  max-width: 800px;
+  width: 98vw;
+  padding: 2rem 1.2rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 900px) {
+  .modal-cobrar .table-responsive {
+    max-width: 100vw;
+    overflow-x: auto;
+    min-width: 320px;
+  }
+  .modal-cobrar table {
+    min-width: 600px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-productos-consumidos {
+    max-width: 99vw;
+    padding: 1rem 0.2rem;
+  }
+  .modal-productos-consumidos .form-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .modal-productos-consumidos .form-actions {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   .modal {
     padding: 1rem;
+    width: 98vw;
+    max-width: 420px;
   }
   .form-actions {
     flex-direction: column;
   }
   table {
     font-size: 12px;
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-productos-consumidos .form-actions button {
+    flex: 1 1 44px;
+  }
+  .modal-productos-consumidos .form-actions {
+    gap: 0.5rem;
+  }
+
+  .modal-nuevo-registro .form-actions button {
+    flex: 1 1 44px;
+  }
+  .modal-nuevo-registro .form-actions {
+    gap: 0.5rem;
   }
 }
   </style>

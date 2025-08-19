@@ -128,5 +128,18 @@
     "entrada": "2025-07-07T02:28:11.169Z",
     "salida": "2025-07-07T02:43:11.169Z",
     "estado": "En Juego"
+  },
+  {
+    "id": "3e38394f-a179-40bf-8ca6-26c6dd07006a",
+    "estadoPago": "LIBRE",
+    "nombre": "Diego",
+    "apellido": "Bueno",
+    "edad": 25,
+    "monto": 12,
+    "pago": "Efectivo",
+    "tiempo": 15,
+    "entrada": "2025-08-19T03:31:07.492Z",
+    "salida": "2025-08-19T03:46:07.492Z",
+    "estado": "En Juego"
   }
 ]

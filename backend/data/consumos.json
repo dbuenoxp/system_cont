@@ -80,5 +80,17 @@
       "cantidad": 1,
       "precio": 1.5
     }
+  ],
+  "turno_Diego_Bueno_2025-08-19_223107": [
+    {
+      "nombre": "Coca Cola",
+      "cantidad": 2,
+      "precio": 1.5
+    },
+    {
+      "nombre": "Piqueo Snax",
+      "cantidad": 1,
+      "precio": 1.2
+    }
   ]
 }

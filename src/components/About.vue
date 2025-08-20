@@ -12,8 +12,8 @@
         </div>
 
         <div class="actions">
-          <button class="btn" @click="exportar">📤 Exportar</button>
-          <button class="btn" @click="showModal = true">➕ Nuevo</button>
+          <button class="btn btn-primary" @click="exportar">📤 Exportar</button>
+          <button class="btn btn-primary" @click="showModal = true">➕ Nuevo</button>
         </div>
       </div>
   <div class="table-responsive"><table class="turnos-table futuristic-table">
@@ -173,7 +173,7 @@
         </div>
       </form>
       <div class="table-responsive">
-        <table class="productos-table">
+        <table class="productos-table futuristic-table">
           <thead>
             <tr>
               <th>Nombre</th>
@@ -205,7 +205,7 @@
       <p class="boleta-title">BOLETA DE VENTA ELECTRÓNICA</p>
       <label>B001 - N°000001</label>
   <div class="table-responsive">
-    <table class="boleta-table">
+    <table class="boleta-table futuristic-table">
         <thead>
           <tr>
             <th>Producto</th>
@@ -919,10 +919,19 @@ const registrar = async () => {
   font-size: 14px;
 }
 
+ .btn-primary {
+    background: linear-gradient(90deg, #b3e6ff 0%, #a3c8f7 100%);
+    color: #226488;
+  }
+  .btn-primary:hover {
+    background: #a3c8f7;
+    color: #17405c;
+  }
+
   .title {
-    color: #2c3e50;
+    color: #226488;
     font-size: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     text-align: center;
   }
   .actions {
@@ -1200,7 +1209,7 @@ select, input {
   gap: 0.8rem;
 }
 .form-actions button {
-  flex: 1 1 120px;
+  flex: 1 1 44px;
   padding: 0.7rem;
   border: none;
   border-radius: 10px;

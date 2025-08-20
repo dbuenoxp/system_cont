@@ -10,7 +10,7 @@
           <input v-model="filtroFecha" type="date" class="form-input filter-input" />
         </div>
         <div class="actions">
-          <button class="btn" @click="exportarExcel">📤 Exportar</button>
+          <button class="btn btn-primary" @click="exportarExcel">📤 Exportar</button>
         </div>
       </div>
       <div class="table-responsive">
@@ -47,19 +47,33 @@
       <div v-if="showDetalle" class="modal-backdrop">
         <div class="modal modal-nuevo-registro">
           <h2 class="modal-title">Detalle de Boleta</h2>
-          <div class="detalle-boleta-grid">
-            <div class="detalle-col">
-              <div class="detalle-item"><span>👤 <b>Cliente:</b></span> <span>{{ detalleSeleccionado.cliente.nombre }} {{ detalleSeleccionado.cliente.apellido }}</span></div>
-              <div class="detalle-item"><span>💳 <b>Tipo de pago:</b></span> <span>{{ detalleSeleccionado.tipoPago }}</span></div>
-              <div class="detalle-item"><span>📅 <b>Fecha:</b></span> <span>{{ new Date(detalleSeleccionado.fechaHora).toLocaleString() }}</span></div>
+          <div class="detalle-boleta-card">
+            <div class="detalle-boleta-row">
+              <div class="detalle-boleta-label">👤 Cliente</div>
+              <div class="detalle-boleta-value">{{ detalleSeleccionado.cliente.nombre }} {{ detalleSeleccionado.cliente.apellido }}</div>
             </div>
-            <div class="detalle-col">
-              <div class="detalle-item"><span>⏱️ <b>Tiempo de juego:</b></span> <span>S/. {{ detalleSeleccionado.montoJuego.toFixed(2) }}</span></div>
-              <div class="detalle-item"><span>💰 <b>Monto recibido:</b></span> <span>S/. {{ detalleSeleccionado.montoRecibido.toFixed(2) }}</span></div>
-              <div class="detalle-item"><span>💸 <b>Vuelto:</b></span> <span>S/. {{ detalleSeleccionado.vuelto.toFixed(2) }}</span></div>
+            <div class="detalle-boleta-row">
+              <div class="detalle-boleta-label">💳 Tipo de pago</div>
+              <div class="detalle-boleta-value">{{ detalleSeleccionado.tipoPago }}</div>
+            </div>
+            <div class="detalle-boleta-row">
+              <div class="detalle-boleta-label">📅 Fecha</div>
+              <div class="detalle-boleta-value">{{ new Date(detalleSeleccionado.fechaHora).toLocaleString() }}</div>
+            </div>
+            <div class="detalle-boleta-row">
+              <div class="detalle-boleta-label">⏱️ Tiempo de juego</div>
+              <div class="detalle-boleta-value">S/. {{ detalleSeleccionado.montoJuego.toFixed(2) }}</div>
+            </div>
+            <div class="detalle-boleta-row">
+              <div class="detalle-boleta-label">💰 Monto recibido</div>
+              <div class="detalle-boleta-value">S/. {{ detalleSeleccionado.montoRecibido.toFixed(2) }}</div>
+            </div>
+            <div class="detalle-boleta-row total-row">
+              <div class="detalle-boleta-label">💸 Vuelto</div>
+              <div class="detalle-boleta-value">S/. {{ detalleSeleccionado.vuelto.toFixed(2) }}</div>
             </div>
           </div>
-          <div v-if="detalleSeleccionado.productos.length">
+          <div v-if="detalleSeleccionado.productos.length" class="productos-card-responsive">
             <h3 class="productos-title">Productos Consumidos</h3>
             <div class="table-responsive">
               <table class="productos-table futuristic-table productos-table-detalle">
@@ -83,7 +97,7 @@
             </div>
           </div>
           <div class="form-actions form-actions-responsive">
-            <button type="button" @click="showDetalle = false">❌ Cerrar</button>
+            <button type="button" class="btn-cerrar-modal" @click="showDetalle = false">❌ Cerrar</button>
           </div>
         </div>
       </div>
@@ -172,9 +186,9 @@
   overflow: hidden;
 }
 .title {
-  color: #2c3e50;
+  color: #226488;
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   text-align: center;
 }
 .top-bar {
@@ -226,6 +240,16 @@
   background-color: #a3c8f7;
   color: #17405c;
 }
+
+ .btn-primary {
+    background: linear-gradient(90deg, #b3e6ff 0%, #a3c8f7 100%);
+    color: #226488;
+  }
+  .btn-primary:hover {
+    background: #a3c8f7;
+    color: #17405c;
+  }
+
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -290,39 +314,66 @@
   justify-content: center;
 }
 
-/* Modal Detalle Boleta Mejorado */
-.detalle-boleta-grid {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 1.2rem;
-  flex-wrap: wrap;
-}
-.detalle-col {
+/* Tarjeta de datos principales del modal detalle boleta */
+.detalle-boleta-card {
+  background: linear-gradient(120deg, #f8fafc 60%, #e6f7ff 100%);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px #b3e6ff22;
+  padding: 1.2rem 1.5rem 1.2rem 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  min-width: 220px;
+  border: 1.5px solid #a3c8f7;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
-.detalle-item {
+.detalle-boleta-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #f8fafc;
-  border-radius: 8px;
-  padding: 0.4rem 0.8rem;
-  font-size: 1rem;
-  color: #226488;
-  box-shadow: 0 1px 4px #b3e6ff22;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid #e6e6e6;
+  font-size: 1.05rem;
 }
+.detalle-boleta-row:last-child {
+  border-bottom: none;
+}
+.detalle-boleta-label {
+  color: #226488;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  min-width: 120px;
+}
+.detalle-boleta-value {
+  color: #2c3e50;
+  font-weight: 500;
+  text-align: right;
+}
+.total-row .detalle-boleta-label, .total-row .detalle-boleta-value {
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* Productos Consumidos - estilos limpios y corregidos */
 .productos-title {
   margin: 1.2rem 0 0.5rem 0;
   font-size: 1.1rem;
   color: #226488;
   font-weight: bold;
+  word-break: break-word;
+  text-align: left;
+}
+.productos-table-detalle {
+  min-width: 420px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .productos-table-detalle th, .productos-table-detalle td {
   font-size: 0.98rem;
   padding: 0.35rem 0.7rem;
+  word-break: break-word;
 }
 .productos-table-detalle th {
   background: linear-gradient(90deg, #b3e6ff 0%, #a3c8f7 100%);
@@ -339,6 +390,60 @@
   }
   .detalle-col {
     min-width: 0;
+  }
+  .productos-title {
+    font-size: 1rem;
+    text-align: left;
+    margin-left: 0.2rem;
+  }
+  .productos-table-detalle {
+    min-width: 320px;
+    font-size: 12px;
+  }
+}
+.productos-table-detalle th {
+  background: linear-gradient(90deg, #b3e6ff 0%, #a3c8f7 100%);
+  color: #226488;
+}
+.productos-table-detalle td {
+  background: #f8fafc;
+  color: #2c3e50;
+}
+
+/* Responsive card para Productos Consumidos */
+.productos-card-responsive {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto 1.2rem auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+  /* padding: 1.2rem 1rem 1.2rem 1rem; */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 1rem;
+}
+.productos-table-detalle {
+  min-width: 420px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 700px) {
+  .productos-card-responsive {
+    max-width: 100vw;
+    padding: 1rem 0.2rem;
+    border-radius: 12px;
+  }
+  .productos-table-detalle {
+    min-width: 320px;
+    font-size: 12px;
   }
 }
 
@@ -363,6 +468,8 @@
   border-radius: 18px;
   width: 95vw;
   max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
   box-shadow: 0 8px 32px rgba(0,0,0,0.18);
   position: relative;
   z-index: 100000;
@@ -371,7 +478,7 @@
   gap: 1rem;
   margin: 0 auto;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 .modal-title {
   text-align: center;
@@ -388,7 +495,7 @@
   gap: 0.8rem;
 }
 .form-actions button {
-  flex: 1 1 120px;
+  flex: 1 1 44px;
   padding: 0.7rem;
   border: none;
   border-radius: 10px;
@@ -430,5 +537,32 @@
     min-width: 600px;
   }
 }
-  </style>
+
+/* Botón cerrar modal tamaño y responsividad */
+.btn-cerrar-modal {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 90px;
+  max-width: 130px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(220,53,69,0.08);
+}
+.btn-cerrar-modal:hover {
+  background-color: #c82333;
+}
+@media (max-width: 700px) {
+  .btn-cerrar-modal {
+    font-size: 0.95rem;
+    padding: 0.45rem 0.7rem;
+    min-width: 80px;
+    max-width: 100px;
+  }
+}
+</style>
   

@@ -1,99 +1,51 @@
 <template>
   
     <!-- Card -->
-    <div class="card border-0 flex-fill w-100" data-list="{&quot;valueNames&quot;: [&quot;name&quot;, &quot;price&quot;, &quot;quantity&quot;, &quot;amount&quot;, {&quot;name&quot;: &quot;sales&quot;, &quot;attr&quot;: &quot;data-sales&quot;}], &quot;page&quot;: 5}" id="topSellingProducts">
-        <div class="card-header border-0 card-header-space-between">
+                <div class="pay-card-home">
+                    <div class="pay-card-header-home">
+                        <span class="pay-card-title-home">
+                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" class="pay-card-mainicon-home">
+                                <rect x="3" y="5" width="18" height="14" rx="4" fill="#e6f7ff"/>
+                                <path d="M7 12h10" stroke="#00bac7" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            Ingresos por Tipo de Pago
+                        </span>
+                    </div>
+                    <div class="pay-table-responsive-home">
+                        <table class="pay-table-home">
+                            <thead>
+                                <tr>
+                                    <th>Tipo de Pago</th>
+                                    <th>Total</th>
+                                    <th>Cantidad</th>
+                                    <th>Porcentaje</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(item, index) in resumenPagos" :key="index" :class="['pay-row-home', item.tipo.toLowerCase()]">
+                                    <td class="pay-type-home">
+                                        <span class="pay-type-icon-home">
+                                            <svg v-if="item.tipo==='EFECTIVO'" width="22" height="22" fill="none" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2" fill="#ffe6b3"/><rect x="7" y="11" width="10" height="2" rx="1" fill="#00bac7"/></svg>
+                                            <svg v-else-if="item.tipo==='PLIN'" width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#b3e6ff"/><path d="M8 12h8" stroke="#00bac7" stroke-width="2" stroke-linecap="round"/></svg>
+                                            <svg v-else-if="item.tipo==='TRANSFERENCIA'" width="22" height="22" fill="none" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="8" rx="2" fill="#e6f7ff"/><path d="M8 12h8" stroke="#00bac7" stroke-width="2" stroke-linecap="round"/></svg>
+                                            <svg v-else width="22" height="22" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="#ffe6b3"/><path d="M8 12h8" stroke="#00bac7" stroke-width="2" stroke-linecap="round"/></svg>
+                                        </span>
+                                        <span class="pay-type-label-home">{{ item.tipo }}</span>
+                                    </td>
+                                    <td class="pay-total-home"><span class="pay-badge-home pay-badge-total-home highlight-badge">{{ item.total }}</span></td>
+                                    <td class="pay-qty-home"><span class="pay-badge-home pay-badge-qty-home">{{ item.cantidad }}</span></td>
+                                    <td class="pay-pct-home">
+                                        <div class="pay-progress-bar-home">
+                                            <div class="pay-progress-home" :style="{ width: item.porcentaje + '%' }"></div>
+                                            <span class="pay-badge-home pay-badge-pct-home">{{ item.porcentaje }}%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-            <!-- Title -->
-            <h2 class="card-header-title h4 text-uppercase">
-                Ingresos
-            </h2>
-        </div>
-
-        <!-- Table -->
-        <div class="table-responsive">
-            <table class="table align-middle table-edge table-nowrap mb-0">
-                <thead class="thead-light">
-                    <tr>
-                        <th>
-                            <a href="javascript: void(0);" class="text-body-secondary list-sort" data-sort="name">
-                                Tipo de Pago
-                            </a>
-                        </th>
-                        <th class="text-end">
-                            <a href="javascript: void(0);" class="text-body-secondary list-sort" data-sort="price">
-                                Total
-                            </a>
-                        </th>
-                        <th class="text-end">
-                            <a href="javascript: void(0);" class="text-body-secondary list-sort" data-sort="quantity">
-                                Cantidad
-                            </a>
-                        </th>
-                        <th class="pe-7 min-w-200px">
-                            <a href="javascript: void(0);" class="text-body-secondary list-sort" data-sort="sales">
-                                Porcentaje
-                            </a>
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody class="list">
-                    <tr v-for="(item, index) in resumenPagos" :key="index">
-                        <td class="name fw-bold">{{ item.tipo }}</td>
-                        <td class="price text-end">{{ item.total }}</td>
-                        <td class="quantity text-end">{{ item.cantidad }}</td>
-                        <td class="sales" :data-sales="item.porcentaje">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="progress d-flex flex-grow-1">
-                                    <div class="progress-bar" role="progressbar" :style="{ width: item.porcentaje + '%' }" :aria-valuenow="item.porcentaje" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class="ms-3 text-body-secondary">{{ item.porcentaje }}%</span>
-                            </div>
-                        </td>
-                    </tr>
-                    <!-- <tr>
-                        <td class="name fw-bold">Efectivo</td>
-                        <td class="price text-end">S/ 499.00</td>
-                        <td class="quantity text-end">127</td>
-                        <td class="sales" data-sales="25">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="progress w-100">
-                                    <div class="progress-bar bg-dark" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class="ms-3 text-body-secondary">25%</span>
-                            </div>
-                        </td>
-                    </tr><tr>
-                        <td class="name fw-bold">PLIN</td>
-                        <td class="price text-end">S/ 349.00</td>
-                        <td class="quantity text-end">98</td>
-                        <td class="sales" data-sales="41">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="progress w-100">
-                                    <div class="progress-bar bg-dark" role="progressbar" style="width: 41%" aria-valuenow="41" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class="ms-3 text-body-secondary">41%</span>
-                            </div>
-                        </td>
-                    </tr><tr>
-                        <td class="name fw-bold">Transferencia</td>
-                        <td class="price text-end">S/ 599.00</td>
-                        <td class="quantity text-end">214</td>
-                        <td class="sales" data-sales="50">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="progress w-100">
-                                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class="ms-3 text-body-secondary">50%</span>
-                            </div>
-                        </td>
-                    </tr> -->
-                </tbody>
-            </table>
-        </div> <!-- / .table-responsive -->
-    </div>
-  
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
@@ -396,5 +348,158 @@ a, button {
     vertical-align: top;
     width: 100%;
 }
+
+/* --- Home-aligned card for TablePay --- */
+.pay-card-home {
+    background: linear-gradient(120deg, #fff6e6 0%, #ffe6b3 100%);
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+    border: 2px solid #f7c59f22;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.7rem 1.5rem 1.2rem 1.5rem;
+    gap: 0.7rem;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.18s;
+    margin-bottom: 1.5rem;
+}
+.pay-card-header-home {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.pay-card-title-home {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #226488;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.pay-card-mainicon-home {
+    opacity: 0.5;
+}
+.pay-table-responsive-home {
+    overflow-x: auto;
+    width: 100%;
+}
+.pay-table-home {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 4px;
+}
+.pay-table-home th {
+    background: #e6f7ff;
+    color: #226488;
+    font-size: 0.93rem;
+    font-weight: 600;
+    border: none;
+    padding: 0.6rem 0.9rem;
+    text-align: left;
+    border-radius: 6px 6px 0 0;
+}
+.pay-table-home td {
+    background: transparent;
+    font-size: 0.98rem;
+    border: none;
+    padding: 0.7rem 0.9rem;
+    border-radius: 0 0 6px 6px;
+    vertical-align: middle;
+    box-shadow: none;
+}
+.pay-type-home {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #0e2238;
+    font-weight: 500;
+}
+.pay-total-home, .pay-qty-home {
+    text-align: center;
+}
+.pay-pct-home {
+    text-align: right;
+}
+.pay-badge-home {
+    display: inline-block;
+    border-radius: 8px;
+    font-size: 0.98rem;
+    font-weight: 600;
+    padding: 0.18rem 0.7rem;
+    box-shadow: 0 1px 4px #b3e6ff22;
+    border: 1.5px solid #b3e6ff;
+    letter-spacing: 0.01em;
+}
+.pay-badge-total-home {
+    background: #b3e6ff;
+    color: #226488;
+    border-color: #b3e6ff;
+}
+.pay-badge-qty-home {
+    background: #ffe6b3;
+    color: #b8860b;
+    border-color: #ffe6b3;
+}
+.pay-badge-pct-home {
+    background: #e6f7ff;
+    color: #226488;
+    border-color: #b3e6ff;
+    margin-left: 0.7em;
+    min-width: 48px;
+    text-align: center;
+}
+.pay-progress-bar-home {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+.pay-progress-home {
+    height: 10px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #b3e6ff 0%, #00bac7 100%);
+    transition: width 0.6s cubic-bezier(.4,2.3,.3,1);
+    min-width: 32px;
+}
+
+/* --- Mejoras visuales para la tabla --- */
+.pay-row-home {
+    background: #f9fbfd;
+    box-shadow: 0 2px 8px #b3e6ff11;
+    border-left: 6px solid #b3e6ff;
+    transition: box-shadow 0.18s, border-color 0.18s;
+}
+.pay-row-home.efectivo { border-color: #ffe6b3; background: #fffaf3; }
+.pay-row-home.plin { border-color: #b3e6ff; background: #f6fbff; }
+.pay-row-home.transferencia { border-color: #e6f7ff; background: #f7fcfd; }
+.pay-row-home:hover {
+    box-shadow: 0 6px 18px #b3e6ff33;
+    background: #fafdff;
+}
+.pay-type-icon-home {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e6f7ff;
+    margin-right: 8px;
+}
+.pay-type-label-home {
+    font-weight: 600;
+    color: #226488;
+    font-size: 1.05rem;
+}
+.highlight-badge {
+    font-size: 1.13rem;
+    font-weight: 700;
+    background: #fff6e6 !important;
+    color: #b8860b !important;
+    border-color: #ffe6b3 !important;
+    box-shadow: 0 2px 8px #ffe6b344;
+}
+  
 
 </style>

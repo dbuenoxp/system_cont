@@ -43,25 +43,24 @@
   </script>
   
   <style scoped>
-  .main-header {
+    .main-header {
       width: 100vw;
       background: linear-gradient(120deg, #ffe6b3 0%, #b3e6ff 100%);
       color: #226488;
       box-shadow: 0 2px 16px #b3e6ff33;
-      position: sticky;
-      top: 0;
-      left: 0;
-      z-index: 9999;
+      position: static;
       padding: 0;
     }
-  .header-inline {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0.5rem 2rem;
-    gap: 1.5rem;
-  }
+
+    .header-inline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.5rem 2rem;
+      gap: 1.5rem;
+      position: relative;
+    }
   .header-menu {
     display: flex;
     align-items: center;

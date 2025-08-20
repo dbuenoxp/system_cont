@@ -8,8 +8,8 @@
           <input id="filtroNombre" v-model="filtroNombre" type="text" placeholder="Buscar producto..." class="form-input filter-input" />
         </div>
         <div class="actions">
-          <button class="btn" @click="showModal = true">➕ Nuevo</button>
-          <button class="btn" @click="exportarExcel">📤 Exportar</button>
+          <button class="btn btn-primary" @click="showModal = true">➕ Nuevo</button>
+          <button class="btn btn-primary" @click="exportarExcel">📤 Exportar</button>
         </div>
       </div>
       <div class="table-responsive">
@@ -453,13 +453,6 @@ table>thead>tr>th, table>tbody>tr>td {
     margin-bottom: 24px;
 }
 
-.title
- {
-    color: #2c3e50;
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    text-align: center;
-}
 
 /* Modal general */
 .modal-backdrop {
@@ -524,9 +517,9 @@ table>thead>tr>th, table>tbody>tr>td {
   }
   
 .title {
-  color: #2c3e50;
+  color: #226488;
   font-size: 2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   text-align: center;
 }
 .top-bar {
@@ -765,5 +758,14 @@ table>thead>tr>th, table>tbody>tr>td {
     min-width: 600px;
   }
 }
+
+ .btn-primary {
+    background: linear-gradient(90deg, #b3e6ff 0%, #a3c8f7 100%);
+    color: #226488;
+  }
+  .btn-primary:hover {
+    background: #a3c8f7;
+    color: #17405c;
+  }
 </style>
   

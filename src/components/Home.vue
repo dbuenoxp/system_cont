@@ -1,31 +1,54 @@
 <template>
   <!-- <div class="background-layer"></div> -->
-    <div class="min-h-screen bg-gray-100 p-6 space-y-6">
-      <!-- Fila 1: Cards estadísticas -->
-      <div class="row grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <CardTemplate title="Clientes" :mainValue="mainValue" :sub1="sub1" :sub2="sub2" ></CardTemplate>
-        <CardTemplate style="margin-left: 24px;" title="Tiempo de Juego" :mainValue="totalTiempo" :sub1="tiempoHoy" :sub2="tiempoMes"> </CardTemplate>
-        <CardTemplate style="margin-left: 24px;" title="Ganancias" :mainValue="totalGanancia" :sub1="gananciaHoy" :sub2="gananciaMes"> </CardTemplate>
-      </div>
-      
-      <!-- Fila 2: Tabla y Ranking -->
-      <div class="row grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" style="display: flex;margin-top: 24px;;margin-left: 0px;">
-         <div class="row grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" style="display: flex;margin-right: 24px;">      
-            <TablePay></TablePay>
-         </div> 
-        <div class="bg-white rounded-xl shadow-md p-6 border-gray-100">
-          <Ranking></Ranking>
+  <div class="admin-view futuristic-card">
+    <div class="container-home">
+      <!-- Estadísticas principales -->
+      <div class="stats-stack">
+        <div class="stat-stack-card clientes">
+          <div class="icon-bg">👥</div>
+          <div class="stat-stack-content">
+            <div class="stat-stack-title">Clientes</div>
+            <div class="stat-stack-main">{{ mainValue }}</div>
+            <div class="stat-stack-badges">
+              <span class="badge badge-hoy">Hoy: {{ sub1 }}</span>
+              <span class="badge badge-mes">Mes: {{ sub2 }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="stat-stack-card tiempo">
+          <div class="icon-bg">⏱️</div>
+          <div class="stat-stack-content">
+            <div class="stat-stack-title">Tiempo de Juego</div>
+            <div class="stat-stack-main">{{ totalTiempo }}</div>
+            <div class="stat-stack-badges">
+              <span class="badge badge-hoy">Hoy: {{ tiempoHoy }}</span>
+              <span class="badge badge-mes">Mes: {{ tiempoMes }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="stat-stack-card ganancias">
+          <div class="icon-bg">💰</div>
+          <div class="stat-stack-content">
+            <div class="stat-stack-title">Ganancias</div>
+            <div class="stat-stack-main">{{ totalGanancia }}</div>
+            <div class="stat-stack-badges">
+              <span class="badge badge-hoy">Hoy: {{ gananciaHoy }}</span>
+              <span class="badge badge-mes">Mes: {{ gananciaMes }}</span>
+            </div>
+          </div>
         </div>
       </div>
-  
-      <!-- Fila 3: Calendario -->
-      <!-- <div class="bg-white rounded-xl shadow-md p-6 border border-gray-100">
-        <h3 class="text-gray-800 font-bold mb-4">Calendario</h3>
-        <div class="h-[400px] bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 italic">
-          Aquí irá el calendario (librería como `vue-cal` o `fullcalendar`)
+      <!-- Ingresos y Ranking -->
+      <div class="content-row">
+        <div class="card-table">
+          <TablePay />
         </div>
-      </div> -->
+        <div class="card-ranking">
+          <Ranking />
+        </div>
+      </div>
     </div>
+  </div>
   </template>
   
   <script setup>
@@ -170,45 +193,185 @@
   </script>
   
   <style scoped>
-  .background-layer {
+  .container-home {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 1.2rem 2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .futuristic-card::before {
+    content: '';
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(120deg, #ffe6b311 0%, #f7c59f11 100%);
+    z-index: 0;
+    border-radius: 18px;
+    pointer-events: none;
+  }
+
+  .stats-stack {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 1.5rem;
     width: 100%;
-    height: 100%;
-    background-image: url('../assets/images/background.jpeg');
-    background-size: cover;
-    background-position: center;
-    opacity: 0.3;
-    z-index: -1;
   }
-  
-  .row {
-      --bs-gutter-x: 1.875rem;
-      --bs-gutter-y: 0;
-      display: flex;
-      flex-wrap: nowrap;
-      margin-left: calc(var(--bs-gutter-x) * -.5);
-      margin-right: calc(var(--bs-gutter-x) * -.5);
-      margin-top: calc(var(--bs-gutter-y) * -1);
+  .stat-stack-card {
+    flex: 1 1 0;
+    min-width: 220px;
+    max-width: 340px;
+    background: linear-gradient(120deg, #fff6e6 0%, #ffe6b3 100%);
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+    border: 2px solid #f7c59f22;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.7rem 1.5rem 1.2rem 1.5rem;
+    gap: 0.7rem;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.18s;
   }
-  
-  .d-flex {
-      display: flex !important;
+  .stat-stack-card:hover {
+    box-shadow: 0 8px 32px #b3e6ff33;
   }
-  
-  @media (min-width: 1400px) {
-      .col-xxl-9 {
-          flex: 0 0 auto;
-          width: 75%;
-      }
+  .icon-bg {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    font-size: 4.2rem;
+    opacity: 0.13;
+    pointer-events: none;
+    z-index: 0;
   }
-  
-  @media (min-width: 1400px) {
-      .col-xxl-3 {
-          flex: 0 0 auto;
-          width: 25%;
-      }
+  .stat-stack-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .stat-stack-title {
+    font-size: 1.1rem;
+    color: #226488;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+    letter-spacing: 0.04em;
+  }
+  .stat-stack-main {
+    font-size: 2.3rem;
+    font-weight: bold;
+    color: #17405c;
+    margin-bottom: 0.2rem;
+  }
+  .stat-stack-badges {
+    display: flex;
+    flex-direction: row;
+    gap: 0.7rem;
+    margin-top: 0.2rem;
+  }
+  .badge {
+    font-size: 0.98rem;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 0.18rem 0.7rem;
+    background: #e6f7ff;
+    color: #226488;
+    box-shadow: 0 1px 4px #b3e6ff22;
+    border: 1.5px solid #b3e6ff;
+    letter-spacing: 0.01em;
+  }
+  .badge-hoy {
+    background: #ffe6b3;
+    color: #b8860b;
+    border-color: #ffe6b3;
+  }
+  .badge-mes {
+    background: #b3e6ff;
+    color: #226488;
+    border-color: #b3e6ff;
+  }
+  .stat-stack-card.clientes {
+    background: linear-gradient(120deg, #e6f7ff 0%, #b3e6ff 100%);
+  }
+  .stat-stack-card.tiempo {
+    background: linear-gradient(120deg, #fff6e6 0%, #ffe6b3 100%);
+  }
+  .stat-stack-card.ganancias {
+    background: linear-gradient(120deg, #b3ffd8 0%, #b3e6ff 100%);
+  }
+  @media (max-width: 900px) {
+    .stats-stack {
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .stat-stack-card {
+      max-width: 100vw;
+      min-width: 0;
+      padding: 1.1rem 0.7rem 1rem 0.7rem;
+    }
+  }
+  @media (max-width: 900px) {
+    .stats-row-cards {
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .stat-card.visual-card {
+      max-width: 100vw;
+      min-width: 0;
+      padding: 1rem 0.7rem 1rem 0.7rem;
+    }
+  }
+  .content-row {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+  .card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    border: 2px solid #f7c59f22;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .card-table {
+    flex: 2 1 0;
+    min-width: 320px;
+    max-width: 100%;
+  }
+  .card-ranking {
+    flex: 1 1 0;
+    min-width: 260px;
+    max-width: 400px;
+  }
+  @media (max-width: 900px) {
+    .container-home {
+      padding: 1.2rem 0.2rem 1rem 0.2rem;
+      gap: 1.2rem;
+    }
+    .stats-row, .content-row {
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .stat-card, .card-table, .card-ranking {
+      min-width: 0;
+      max-width: 100vw;
+      margin: 0;
+    }
+    .card {
+      padding: 1.2rem 0.7rem 1rem 0.7rem;
+    }
   }
   </style>
   

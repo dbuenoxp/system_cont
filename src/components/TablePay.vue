@@ -49,6 +49,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue'
+import { API_BASE_URL } from '../env.js'
 
 const resumenPagos = ref([])
 

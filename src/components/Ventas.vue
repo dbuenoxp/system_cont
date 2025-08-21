@@ -148,6 +148,7 @@
   
   <script setup>
   import { ref, onMounted } from 'vue'
+  import { API_BASE_URL } from '../env.js'
   
   const showModal = ref(false)
   const showDetalle = ref(false)

@@ -90,6 +90,7 @@
   import { ref, computed, watch } from 'vue';
   import * as XLSX from 'xlsx';
   import { onMounted } from 'vue';
+  import { API_BASE_URL } from '../env.js'
   
   const showModal = ref(false)
   const productos = ref([]);

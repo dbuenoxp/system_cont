@@ -108,6 +108,7 @@
   
   <script setup>
   import { ref, computed, onMounted } from 'vue'
+  import { API_BASE_URL } from '../env.js'
   import * as XLSX from 'xlsx'
   
   const filtroNombre = ref('')

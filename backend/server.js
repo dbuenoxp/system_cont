@@ -11,6 +11,7 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'https://dbuenoxp.github.io',
+    'https://dbuenoxp.github.io/system_cont/',
     '*'
   ]
 }))

@@ -10,6 +10,7 @@ const app = express() // ⬅️ Primero defines app
 app.use(cors({
   origin: [
     'http://localhost:5173',
+    'https://dbuenoxp.github.io',
     '*'
   ]
 }))

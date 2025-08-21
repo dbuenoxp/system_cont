@@ -56,7 +56,8 @@
   import CardTemplate from '../components/CardTemplate.vue'
   import TablePay from '../components/TablePay.vue'
   import Ranking from '../components/Ranking.vue'
-  import { ref, onMounted } from 'vue'
+    import { ref, onMounted, computed } from 'vue'
+    import { API_BASE_URL } from '../env.js'
   
   const mainValue = ref(0)
   const sub1 = ref(0) 
@@ -73,7 +74,7 @@
   
   async function fetchPlayers() {
     try {
-      const res = await fetch('http://localhost:3000/players')
+  const res = await fetch(`${API_BASE_URL}players`)
       return await res.json()
     } catch (err) {
       console.error('Error al obtener jugadores:', err)
@@ -144,7 +145,7 @@
 
   async function fetchBoletas() {
   try {
-    const res = await fetch('http://localhost:3000/api/boletas')
+  const res = await fetch(`${API_BASE_URL}api/boletas`)
     return await res.json()
   } catch (error) {
     console.error('Error al obtener boletas:', error)

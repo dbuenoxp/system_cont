@@ -43,7 +43,8 @@
  </template>
  
  <script setup>
- import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import { API_BASE_URL } from '../env.js'
  
  const topClientes = ref([])
  
@@ -57,7 +58,7 @@
  
  async function fetchPlayers() {
    try {
-     const res = await fetch('http://localhost:3000/players/ranking')
+    const res = await fetch(`${API_BASE_URL}players/ranking`)
      return await res.json()
    } catch (error) {
      console.error('Error al obtener jugadores:', error)

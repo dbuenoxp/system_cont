@@ -150,7 +150,7 @@
 
   const cargarProductos = async () => {
     try {
-      const response = await fetch('http://localhost:3000/products')
+      const response = await fetch(`${API_BASE_URL}products`)
       const data = await response.json()
       console.log('Productos cargados:', data) // Verifica aquí
       productos.value = data || [] // Asegura que siempre sea array
@@ -165,7 +165,7 @@
     try {
       if (modoEdicion.value) {
         // Si es edición
-        const res = await fetch(`http://localhost:3000/products/${form.value.id}`, {
+        const res = await fetch(`${API_BASE_URL}products/${form.value.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(form.value)
@@ -177,7 +177,7 @@
         mostrarMensaje('✏️ Producto modificado')
       } else {
         // Nuevo producto
-        const res = await fetch('http://localhost:3000/products', {
+        const res = await fetch(`${API_BASE_URL}products`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(form.value)
@@ -214,24 +214,10 @@
       showDeleteConfirm.value = true
    }
 
-  // function eliminarProducto(index) {
-  //   productos.value.splice(index, 1);
-  //   guardarEnLocalStorage(); 
-  // }
-
-  // const eliminar = () => {
-  //     if (deleteIndex.value !== null) {
-  //       productos.value.splice(deleteIndex.value, 1)
-  //       guardarEnLocalStorage()
-  //     }
-  //     showDeleteConfirm.value = false
-  //     deleteIndex.value = null
-  //   }
-
     const eliminar = async (id) => {
       if (!confirm('¿Seguro que deseas eliminar este producto?')) return
       try {
-        await fetch(`http://localhost:3000/products/${id}`, {
+        await fetch(`${API_BASE_URL}products/${id}`, {
           method: 'DELETE'
         })
         const index = productos.value.findIndex(p => p.id === id);

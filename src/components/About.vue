@@ -271,6 +271,7 @@
   import { ref, onMounted, watch, computed } from 'vue'
   import jsPDF from 'jspdf'
   import autoTable from 'jspdf-autotable'
+  import { API_BASE_URL } from '../env.js'
 
 const showModal = ref(false)
 const players = ref([])
@@ -342,7 +343,7 @@ watch([
 
   const cargarProductos = async () => {
     try {
-      const response = await fetch('http://localhost:3000/products')
+      const response = await fetch(`${API_BASE_URL}products`)
       const data = await response.json()
       console.log('Productos cargados:', data) // Verifica aquí
       productos.value = data || [] // Asegura que siempre sea array
@@ -372,7 +373,7 @@ const estaPagado = (id) => {
 const guardarConsumos = async () => {
   try {
     const turnoId = generarTurnoId(turnoSeleccionado.value);
-    const res = await fetch(`http://localhost:3000/api/consumos/${turnoId}`, {
+    const res = await fetch(`${API_BASE_URL}api/consumos/${turnoId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(productosConsumidos.value)
@@ -399,7 +400,7 @@ const abrirModalCobrar = async  (cliente, index) => {
   const turnoId = generarTurnoId(cliente)
 
   try {
-    const res = await fetch(`http://localhost:3000/api/consumos/${turnoId}`)
+    const res = await fetch(`${API_BASE_URL}api/consumos/${turnoId}`)
     if (!res.ok) throw new Error('No se pudo obtener los productos')
     productosCobroActual.value = await res.json()
   } catch (err) {
@@ -453,7 +454,7 @@ const marcarComoPagado = async () =>  {
   }
 
   try {
-    const res = await fetch('http://localhost:3000/api/boleta', {
+    const res = await fetch(`${API_BASE_URL}api/boleta`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(boleta)
@@ -461,7 +462,7 @@ const marcarComoPagado = async () =>  {
 
     const data = await res.json()
     console.log('✅ Boleta guardada con ID:', data.boletaId)
-    const resPago = await fetch(`http://localhost:3000/players/${clienteCobroActual.value.id}/pagar`, {
+    const resPago = await fetch(`${API_BASE_URL}players/${clienteCobroActual.value.id}/pagar`, {
       method: 'POST'
     });
     const dataPago = await resPago.json();
@@ -501,7 +502,7 @@ const agregarProducto = async () => {
 
 const cargarConsumos = async (turnoId) => {
   try {
-    const res = await fetch(`http://localhost:3000/api/consumos/${turnoId}`);
+    const res = await fetch(`${API_BASE_URL}api/consumos/${turnoId}`);
     productosConsumidos.value = await res.json();
   } catch (err) {
     console.error('Error al cargar consumos:', err);
@@ -610,7 +611,7 @@ const cargarProductosConsumidos = (cliente, index) => {
 
     if (productosDisponibles.value.length === 0) {
       try {
-        const res = await fetch('http://localhost:3000/products');
+        const res = await fetch(`${API_BASE_URL}products`);
         productosDisponibles.value = await res.json();
       } catch (err) {
         console.error('Error cargando productos:', err);
@@ -642,38 +643,38 @@ const cargarProductosConsumidos = (cliente, index) => {
 //   mostrarMensaje('🛒 Productos guardados')
 // }
 
-const registrar = async () => {
-  const entrada = new Date();
-  const tiempo = calcularTiempo(form.value.monto);
-  const salida = new Date(entrada.getTime() + tiempo * 60000);
+  const registrar = async () => {
+    const entrada = new Date();
+    const tiempo = calcularTiempo(form.value.monto);
+    const salida = new Date(entrada.getTime() + tiempo * 60000);
 
-  const nuevoJugador = {
-    ...form.value,
-    tiempo,
-    entrada,
-    salida,
-    estado: 'En Juego'
+    const nuevoJugador = {
+      ...form.value,
+      tiempo,
+      entrada,
+      salida,
+      estado: 'En Juego'
+    };
+
+    try {
+      const res = await fetch(`${API_BASE_URL}players`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nuevoJugador)
+      });
+      const data = await res.json();
+      players.value.push(data);
+      showModal.value = false;
+      mostrarMensaje('✅ Registro guardado');
+    } catch (error) {
+      console.error('Error al registrar:', error);
+      mostrarMensaje('❌ Error al registrar');
+    }
   };
-
-  try {
-    const res = await fetch('http://localhost:3000/players', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(nuevoJugador)
-    });
-    const data = await res.json();
-    players.value.push(data);
-    showModal.value = false;
-    mostrarMensaje('✅ Registro guardado');
-  } catch (error) {
-    console.error('Error al registrar:', error);
-    mostrarMensaje('❌ Error al registrar');
-  }
-};
 
   const obtenerJugadores = async () => {
     try {
-      const response = await fetch('http://localhost:3000/players')
+      const response = await fetch(`${API_BASE_URL}players`)
       if (!response.ok) throw new Error('Error al obtener jugadores')
       const data = await response.json()
       return data
@@ -728,7 +729,7 @@ const registrar = async () => {
     const eliminarJugador = async (id) => {
       if (!confirm('¿Seguro que deseas eliminar este jugador?')) return
       try {
-        await fetch(`http://localhost:3000/players/${id}`, {
+        await fetch(`${API_BASE_URL}players/${id}`, {
           method: 'DELETE'
         })
         players.value = players.value.filter(p => p.id !== id)
@@ -763,7 +764,7 @@ const registrar = async () => {
 
     const modificarJugador = async (jugadorActualizado) => {
       try {
-        const res = await fetch(`http://localhost:3000/players/${jugadorActualizado.id}`, {
+        const res = await fetch(`${API_BASE_URL}players/${jugadorActualizado.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(jugadorActualizado)

@@ -81,7 +81,7 @@ function calcularResumen(boletas) {
 
 async function fetchBoletas() {
   try {
-    const res = await fetch('http://localhost:3000/api/boletas')
+    const res = await fetch(`${API_BASE_URL}api/boletas`)
     const data = await res.json()
     calcularResumen(data)
   } catch (error) {

@@ -164,15 +164,15 @@
   const listaClientes = ref([])
   
   onMounted(async () => {
-    const res1 = await fetch('http://localhost:3000/boleta_productos')
+    const res1 = await fetch(`${API_BASE_URL}boleta_productos`)
     let data = await res1.json()
     data = data.sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
     ventas.value = data
-  
-    const res2 = await fetch('http://localhost:3000/products')
+
+    const res2 = await fetch(`${API_BASE_URL}products`)
     productosDisponibles.value = await res2.json()
 
-    const resClientes = await fetch('http://localhost:3000/players')
+    const resClientes = await fetch(`${API_BASE_URL}players`)
     listaClientes.value = await resClientes.json()
   })
 
@@ -228,8 +228,8 @@
       total,
       fecha: new Date().toISOString()
     }
-  
-    const res = await fetch('http://localhost:3000/boleta_productos', {
+
+    const res = await fetch(`${API_BASE_URL}boleta_productos`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(venta)

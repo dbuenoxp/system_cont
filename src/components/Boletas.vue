@@ -120,7 +120,7 @@
   const boletasPorPagina = 10
   
   onMounted(async () => {
-    const res = await fetch('http://localhost:3000/api/boletas')
+    const res = await fetch(`${API_BASE_URL}api/boletas`)
     const data = await res.json()
     const parsed = Object.entries(data).map(([key, val]) => ({ numero: key, ...val }))
     boletas.value = parsed

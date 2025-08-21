@@ -7,7 +7,12 @@ const boletasRouter = require('./routes/boletas');
 const boletaProductosRouter = require('./routes/boleta_productos')
 const app = express() // ⬅️ Primero defines app
 
-app.use(cors()) 
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    '*'
+  ]
+}))
 app.use(express.json()) 
 app.use('/players', playersRouter);
 app.use('/products', productsRouter);
